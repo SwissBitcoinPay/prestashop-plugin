@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+    <name>swissbitcoinpay</name>
+    <displayName>Swiss Bitcoin Pay</displayName>
+    <version>1.0.0</version>
+    <author>Nisaba</author>
+    <description>Accept Bitcoin payments using Swiss Bitcoin Pay.</description>
+    <tab>payments_gateways</tab>
+    <is_configurable>true</is_configurable>
+    <need_instance>false</need_instance>
+    <ps_versions_compliancy>
+        <min>1.7.0.0</min>
+        <max>8.0.0</max>
+    </ps_versions_compliancy>
+    <dependencies>
+    </dependencies>
+</module>
