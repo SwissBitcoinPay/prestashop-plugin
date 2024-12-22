@@ -15,10 +15,10 @@
  * @author    Swiss Bitcoin Pay <https://swiss-bitcoin-pay.ch>
  * @copyright 2024 Swiss Bitcoin Pay
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
-*/
+ */
 
 if (!defined('_PS_VERSION_')) {
-	exit;
+    exit;
 }
 
 class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
@@ -40,7 +40,6 @@ class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
 
             $step++;
             $jsonStr = Tools::file_get_contents('php://input');
-        	$this->logError($jsonStr);
             $jsonData = json_decode($jsonStr, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $this->logError("Invalid JSON payload");
@@ -63,7 +62,7 @@ class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
             $isExpired = $jsonData['status'] === 'expired' ?? false;
         	$isUnconfirmed = $jsonData['status'] === 'unconfirmed' ?? false;
 
-            $step++;
+        	$step++;
         	$orderID = $jsonData['extra']['orderID'];
         	$cartID = $jsonData['extra']['cartID'];
         
@@ -80,10 +79,19 @@ class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
                 $currency = new Currency($cart->id_currency);
                 $paymentModule = Module::getInstanceByName('swissbitcoinpay');
 
+            	$statut = '';
+            	if ($isPaid) {
+                	$statut = Configuration::get('PS_OS_PAYMENT');
+            	} elseif ($isUnconfirmed) {
+                	$statut = (Configuration::get('PS_OS_BANKWIRE'));
+            	} elseif ($isExpired) {
+                	$statut = Configuration::get('PS_OS_CANCELED');
+            	}
+            
                 $paymentModule->validateOrder(
                     $cart->id,
-                    Configuration::get('PS_OS_PAYMENT'),
-                    $amount,
+                    $statut,
+                    $jsonData['fiatAmount'],
                     'Swiss Bitcoin Pay',
                     null,
                     [],
@@ -92,28 +100,26 @@ class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
                     $customer->secure_key
                 );
 
-                $order = Order::getByCartId($cart->id);
+            } else {
+
+	            if ($isPaid) {
+    	            $order->setCurrentState(Configuration::get('PS_OS_PAYMENT'));
+        	    } elseif ($isUnconfirmed && $order->current_state !== Configuration::get('PS_OS_PAYMENT')) {
+            	    $order->setCurrentState(Configuration::get('PS_OS_BANKWIRE'));
+            	} elseif ($isExpired && $order->current_state !== Configuration::get('PS_OS_PAYMENT')) {
+                	$order->setCurrentState(Configuration::get('PS_OS_CANCELED'));
+            	}
+
+            	$order->addOrderPayment(
+                	new OrderPayment([
+                    	'order_reference' => $orderGuid,
+                    	'amount' => $jsonData['fiatAmount'],
+                    	'payment_method' => 'Swiss Bitcoin Pay'
+                	])
+            	);
+            	$order->save();
             }
-
-            $step++;        
-            if ($isPaid) {
-                $order->setCurrentState(Configuration::get('PS_OS_PAYMENT'));
-            } elseif ($isUnconfirmed && $order->current_state !== Configuration::get('PS_OS_PAYMENT')) {
-                $order->setCurrentState(Configuration::get('PS_OS_BANKWIRE'));
-            } elseif ($isExpired && $order->current_state !== Configuration::get('PS_OS_PAYMENT')) {
-                $order->setCurrentState(Configuration::get('PS_OS_CANCELED'));
-            }
-
-            $order->addOrderPayment(
-                new OrderPayment([
-                    'order_reference' => $orderGuid,
-                    'amount' => $jsonData['amount'],
-                    'payment_method' => 'Swiss Bitcoin Pay'
-                ])
-            );
-
             $step++;
-            $order->save();
 
             http_response_code(200);
             die('OK');

@@ -15,7 +15,7 @@
  * @author    Swiss Bitcoin Pay <https://swiss-bitcoin-pay.ch>
  * @copyright 2024 Swiss Bitcoin Pay
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
-*/
+ */
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -29,7 +29,7 @@ class SwissBitcoinPay extends PaymentModule
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
         $this->author = 'Nisaba';
-		$this->ps_versions_compliancy = ['min' => Constants::MINIMUM_PS_VERSION, 'max' => _PS_VERSION_];
+		$this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
         $this->controllers = ['validation'];
         $this->is_eu_compatible = 1;
         $this->bootstrap = true;

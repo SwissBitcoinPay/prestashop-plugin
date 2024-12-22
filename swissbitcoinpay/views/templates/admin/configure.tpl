@@ -17,7 +17,7 @@
  *}
 {* licence *}
 <div class="panel">
-    <h3>{$module_name|escape} - Configuration</h3>
+    <h3>Swiss Bitcoin Pay - Configuration</h3>
 	<br/>
     <form method="post" action="{$link->getAdminLink('AdminModules')|escape:'html'}&configure={$module_name}" class="form">
         <div class="form-group">

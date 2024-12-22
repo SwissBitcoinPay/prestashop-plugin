@@ -15,9 +15,10 @@
  * @author    Swiss Bitcoin Pay <https://swiss-bitcoin-pay.ch>
  * @copyright 2024 Swiss Bitcoin Pay
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
-*/
+ */
+
 if (!defined('_PS_VERSION_')) {
-	exit;
+    exit;
 }
 
 class SwissBitcoinPayValidationModuleFrontController extends ModuleFrontController
