@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright (c) 2024 Swiss Bitcoin Pay (https://swiss-bitcoin-pay.ch)
  *

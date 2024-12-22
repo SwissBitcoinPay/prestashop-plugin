@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright (c) 2024 Swiss Bitcoin Pay (https://swiss-bitcoin-pay.ch)
  *
@@ -17,7 +16,6 @@
  * @copyright 2024 Swiss Bitcoin Pay
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -49,8 +47,8 @@ class SwissBitcoinPay extends PaymentModule
             && Configuration::updateValue('SWISS_BITCOIN_PAY_API_URL', 'https://api.swiss-bitcoin-pay.ch')
             && Configuration::updateValue('SWISS_BITCOIN_PAY_API_SECRET', '')
             && Configuration::updateValue('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN', false)
-            && $this->registerHook('paymentOptions')
-            && $this->registerHook('paymentReturn');
+            && $this->registerHook('displayPaymentOptions')
+            && $this->registerHook('displayPaymentReturn');
     }
 
     public function uninstall()
