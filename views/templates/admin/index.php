@@ -1,4 +1,5 @@
-{**
+<?php
+/**
  * Copyright (c) 2024 Swiss Bitcoin Pay (https://swiss-bitcoin-pay.ch)
  *
  * NOTICE OF LICENSE
@@ -14,8 +15,13 @@
  * @author    Swiss Bitcoin Pay <https://swiss-bitcoin-pay.ch>
  * @copyright 2024 Swiss Bitcoin Pay
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
- *}
-{* licence *}
-<div class="payment-info">
-    <p>{l s='You will be redirected to Swiss Bitcoin Pay to complete your payment.' mod='swissbitcoinpay'}</p>
-</div>
+ */
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+
+header('Location: ../');
+exit;
