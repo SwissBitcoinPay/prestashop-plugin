@@ -1,4 +1,21 @@
 <?php
+/**
+ * Copyright (c) 2024 Swiss Bitcoin Pay (https://swiss-bitcoin-pay.ch)
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License version 3.0
+ * that is bundled with this package in the file LICENSE.md.
+ * It is also available through the world-wide-web at this URL:
+ * https://opensource.org/licenses/AFL-3.0
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@prestashop.com so we can send you a copy immediately.
+ *
+ * @author    Swiss Bitcoin Pay <https://swiss-bitcoin-pay.ch>
+ * @copyright 2024 Swiss Bitcoin Pay
+ * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
+*/
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -12,6 +29,7 @@ class SwissBitcoinPay extends PaymentModule
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
         $this->author = 'Nisaba';
+		$this->ps_versions_compliancy = ['min' => Constants::MINIMUM_PS_VERSION, 'max' => _PS_VERSION_];
         $this->controllers = ['validation'];
         $this->is_eu_compatible = 1;
         $this->bootstrap = true;
@@ -19,7 +37,7 @@ class SwissBitcoinPay extends PaymentModule
         parent::__construct();
 
         $this->displayName = $this->l('Swiss Bitcoin Pay');
-        $this->description = $this->l('Payment in bitcoins.');
+        $this->description = $this->l('Accept Bitcoin payments using Swiss Bitcoin Pay.');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall this module?');
     }
 
