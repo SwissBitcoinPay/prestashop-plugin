@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2024 Swiss Bitcoin Pay (https://swiss-bitcoin-pay.ch)
  *
@@ -29,7 +30,7 @@ class SwissBitcoinPay extends PaymentModule
         $this->tab = 'payments_gateways';
         $this->version = '1.0.0';
         $this->author = 'Nisaba';
-		$this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
+        $this->ps_versions_compliancy = ['min' => '1.7', 'max' => _PS_VERSION_];
         $this->controllers = ['validation'];
         $this->is_eu_compatible = 1;
         $this->bootstrap = true;
@@ -44,10 +45,10 @@ class SwissBitcoinPay extends PaymentModule
     public function install()
     {
         return parent::install()
-        	&& Configuration::updateValue('SWISS_BITCOIN_PAY_API_KEY', '')
-        	&& Configuration::updateValue('SWISS_BITCOIN_PAY_API_URL', 'https://api.swiss-bitcoin-pay.ch')
-        	&& Configuration::updateValue('SWISS_BITCOIN_PAY_API_SECRET', '')
-        	&& Configuration::updateValue('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN', false)
+            && Configuration::updateValue('SWISS_BITCOIN_PAY_API_KEY', '')
+            && Configuration::updateValue('SWISS_BITCOIN_PAY_API_URL', 'https://api.swiss-bitcoin-pay.ch')
+            && Configuration::updateValue('SWISS_BITCOIN_PAY_API_SECRET', '')
+            && Configuration::updateValue('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN', false)
             && $this->registerHook('paymentOptions')
             && $this->registerHook('paymentReturn');
     }
@@ -55,13 +56,13 @@ class SwissBitcoinPay extends PaymentModule
     public function uninstall()
     {
         return parent::uninstall()
-	        && Configuration::deleteByName('SWISS_BITCOIN_PAY_API_URL')
-	        && Configuration::deleteByName('SWISS_BITCOIN_PAY_API_SECRET')
-	        && Configuration::deleteByName('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN')
-	    	&& Configuration::deleteByName('SWISS_BITCOIN_PAY_API_KEY');
+            && Configuration::deleteByName('SWISS_BITCOIN_PAY_API_URL')
+            && Configuration::deleteByName('SWISS_BITCOIN_PAY_API_SECRET')
+            && Configuration::deleteByName('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN')
+            && Configuration::deleteByName('SWISS_BITCOIN_PAY_API_KEY');
     }
 
-    public function hookPaymentOptions($params)
+    public function hookDisplayPaymentOptions($params)
     {
         if (!$this->active) {
             return [];
@@ -69,13 +70,14 @@ class SwissBitcoinPay extends PaymentModule
 
         $paymentOption = new PrestaShop\PrestaShop\Core\Payment\PaymentOption();
         $paymentOption->setCallToActionText($this->l('Pay with Bitcoin'))
-                      ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true))
-                      ->setAdditionalInformation($this->context->smarty->fetch('module:swissbitcoinpay/views/templates/front/payment_infos.tpl'));
+            ->setAction($this->context->link->getModuleLink($this->name, 'validation', [], true))
+            ->setAdditionalInformation($this->context->smarty->fetch('module:swissbitcoinpay/views/templates/front/payment_infos.tpl'))
+            ->setLogo(Media::getMediaPath(_PS_MODULE_DIR_ . $this->name . '/bitcoin_logo.png'));
 
         return [$paymentOption];
     }
 
-    public function hookPaymentReturn($params)
+    public function hookDisplayPaymentReturn($params)
     {
         if (!$this->active) {
             return;
@@ -103,7 +105,7 @@ class SwissBitcoinPay extends PaymentModule
             } else {
                 $output .= $this->displayError($this->l('Invalid API Key.'));
             }
-        	Configuration::updateValue('SWISS_BITCOIN_PAY_API_URL', Tools::getValue('SWISS_BITCOIN_PAY_API_URL'));
+            Configuration::updateValue('SWISS_BITCOIN_PAY_API_URL', Tools::getValue('SWISS_BITCOIN_PAY_API_URL'));
             Configuration::updateValue('SWISS_BITCOIN_PAY_API_SECRET', Tools::getValue('SWISS_BITCOIN_PAY_API_SECRET'));
             Configuration::updateValue('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN', Tools::getValue('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN') ? true : false);
         }
@@ -121,5 +123,4 @@ class SwissBitcoinPay extends PaymentModule
         // Return the form rendered by configure.tpl
         return $output . $this->fetch('module:swissbitcoinpay/views/templates/admin/configure.tpl');
     }
-
 }

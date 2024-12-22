@@ -33,26 +33,26 @@ class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
         try {
             $SwissBtcPaySig = $_SERVER['HTTP_SBP_SIG'] ?? null;
             if (empty($SwissBtcPaySig)) {
-                $this->logError("Secret key not set");
+                $this->logError('Secret key not set');
                 http_response_code(400);
-                die('Secret key not set');
+                exit('Secret key not set');
             }
 
             $step++;
             $jsonStr = Tools::file_get_contents('php://input');
             $jsonData = json_decode($jsonStr, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                $this->logError("Invalid JSON payload");
+                $this->logError('Invalid JSON payload');
                 http_response_code(400);
-                die('Invalid JSON payload');
+                exit('Invalid JSON payload');
             }
 
             $step++;
             $SwissSecret = explode('=', $SwissBtcPaySig)[1];
             if (!$this->checkSecretKey(Configuration::get('SWISS_BITCOIN_PAY_API_SECRET'), $jsonStr, $SwissSecret)) {
-                $this->logError("Invalid signature");
+                $this->logError('Invalid signature');
                 http_response_code(403);
-                die('Invalid signature');
+                exit('Invalid signature');
             }
 
             $step++;
@@ -70,9 +70,9 @@ class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
             if (!Validate::isLoadedObject($order)) {
                 $cart = new Cart($cartID);
                 if (!Validate::isLoadedObject($cart)) {
-                    $this->logError("Cart not found " . $cartID);
+                    $this->logError('Cart not found ' . $cartID);
                     http_response_code(404);
-                    die('Cart not found ' . $cartID);
+                    exit('Cart not found ' . $cartID);
                 }
 
                 $customer = new Customer($cart->id_customer);
@@ -122,11 +122,11 @@ class swissbitcoinpaywebhookModuleFrontController extends ModuleFrontController
             $step++;
 
             http_response_code(200);
-            die('OK');
+            exit('OK');
         } catch (Exception $e) {
-            $this->logError("Step: $step - $jsonStr - " . $e->getMessage());
+            $this->logError('Step: $step - $jsonStr - ' . $e->getMessage());
             http_response_code(500);
-            die('Error processing webhook');
+            exit('Error processing webhook');
         }
     }
 

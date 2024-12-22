@@ -19,8 +19,7 @@
 <div class="panel">
     <h3>Swiss Bitcoin Pay - Configuration</h3>
 	<br/>
-    <form method="post" action="{$link->getAdminLink('AdminModules')|escape:'html'}&configure={$module_name}" class="form">
-        <div class="form-group">
+    <form method="post" action="{$link->getAdminLink('AdminModules')|escape:'html':'UTF-8'}&configure={$module_name|escape:'html':'UTF-8'}" class="form">        <div class="form-group">
             <label for="SWISS_BITCOIN_PAY_API_KEY">{l s='API URL' mod='swissbitcoinpay'}</label>
             <input type="text" id="SWISS_BITCOIN_PAY_API_URL" name="SWISS_BITCOIN_PAY_API_URL" 
                    value="{$api_url|escape:'htmlall':'UTF-8'}" class="form-control" required />
