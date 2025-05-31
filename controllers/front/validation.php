@@ -119,7 +119,9 @@ class SwissBitcoinPayValidationModuleFrontController extends ModuleFrontControll
 				'email' => $paymentData['BuyerEmail'],
 				'emailLanguage' => $paymentData['Lang'],
 				'redirectAfterPaid' => $paymentData['RedirectionURL'],
-				'webhook' => $paymentData['WebHookURL'],
+				'webhook' => [
+					'url' => $paymentData['WebHookURL']
+				],
 				'delay' => 60,
 				'onChain' => $settings['AcceptOnChain'],
 				'extra' => [

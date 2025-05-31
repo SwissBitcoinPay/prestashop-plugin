@@ -47,8 +47,8 @@ class SwissBitcoinPay extends PaymentModule
             && Configuration::updateValue('SWISS_BITCOIN_PAY_API_URL', 'https://api.swiss-bitcoin-pay.ch')
             && Configuration::updateValue('SWISS_BITCOIN_PAY_API_SECRET', '')
             && Configuration::updateValue('SWISS_BITCOIN_PAY_ACCEPT_ONCHAIN', false)
-            && $this->registerHook('displayPaymentOptions')
-            && $this->registerHook('displayPaymentReturn');
+            && $this->registerHook('PaymentOptions')
+            && $this->registerHook('PaymentReturn');
     }
 
     public function uninstall()
@@ -60,7 +60,7 @@ class SwissBitcoinPay extends PaymentModule
             && Configuration::deleteByName('SWISS_BITCOIN_PAY_API_KEY');
     }
 
-    public function hookDisplayPaymentOptions($params)
+    public function hookPaymentOptions($params)
     {
         if (!$this->active) {
             return [];
@@ -75,7 +75,7 @@ class SwissBitcoinPay extends PaymentModule
         return [$paymentOption];
     }
 
-    public function hookDisplayPaymentReturn($params)
+    public function hookPaymentReturn($params)
     {
         if (!$this->active) {
             return;
