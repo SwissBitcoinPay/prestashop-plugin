@@ -2,7 +2,7 @@
 <module>
     <name>swissbitcoinpay</name>
     <displayName>Swiss Bitcoin Pay</displayName>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <author>Nisaba</author>
     <description>Accept Bitcoin payments using Swiss Bitcoin Pay.</description>
     <tab>payments_gateways</tab>
